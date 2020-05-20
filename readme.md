@@ -15,7 +15,7 @@ pip install isbnlib
 ```
 >ISBNLIB est une biliothèque utilisé pour télécharger les méta-données des livres à partir de leur ISBN. Les données sont récupérées sur la base de données [Google Books](https://books.google.com)
 
----
+Pour la première utilisation, l'administrateur doit exécuter le <abbr title="init.py">fichier d'initialisation (init)</abbr>.
 
 # Utilisation
 
@@ -76,6 +76,8 @@ Fonction non implémentée
 Les bases de données sont crées en ***Json***. Se trouvant dans le répertoire "/data", on y trouve de multiples bases de données listées ci dessous.
 
 #### <abbr title="data/title.json">Titres</abbr>
+Ce fichier json permet de lister en une seule base de donnée les titres.
+
 ```json
     {
     "9782092555729": "Le th\u00e9or\u00e8me des Katherine",
@@ -87,6 +89,7 @@ Les bases de données sont crées en ***Json***. Se trouvant dans le répertoire
     }
 ```
 #### <abbr title="data/authors.json">Auteurs</abbr>
+Ce fichier json permet de lister en une seule base de donnée les auteurs et leurs livres.
 ```json
 {   
     "9783540420576": ["Roger Godement"],
@@ -96,6 +99,11 @@ Les bases de données sont crées en ***Json***. Se trouvant dans le répertoire
 }
 ```
 #### <abbr title="data/reservation.json">Réservations</abbr>
+Ce fichier json permet de lister en une seule base de donnée tous les emprunts de livre, avec les informations suivantes :
+
+* Date d'emprunt
+* Date maximale où le livre doit être rendu
+* Nom de l'élève
 ```json
 {
     "9782203001022":{
@@ -110,11 +118,43 @@ Les bases de données sont crées en ***Json***. Se trouvant dans le répertoire
     }
 }
 ```
-#### <abbr title="data/livres/{ISBN}.json">Fiche livre</abbr>7
+>Le fonctionnement des réservations est vu dans la partie "réservation"
+#### <abbr title="data/livres/{ISBN}.json">Fiche livre</abbr>
+>Chaque livre possède sa propre fiche détaillée situé dans ```"data/livres/{ISBN}.json"```.
+
+Exemple d'une fiche de livre :
+
+```json
+{
+    "Book": {
+        "Titre": "Harry Potter et le Prisonnier d'Azkaban",
+        "Auteur": ["J.K. Rowling"],
+        "Synopsis": "Sirius Black, le dangereux criminel qui s\u2019est \u00e9chapp\u00e9 de la forteresse d\u2019Azkaban, recherche Harry Potter. C\u2019est donc sous bonne garde que l\u2019apprenti sorcier fait sa troisi\u00e8me rentr\u00e9e. Au programme : des cours de divination, la fabrication d\u2019une potion de Ratatinage, le dressage des hippogriffes...",
+        "publisher": "Pottermore Publishing",
+        "year": "2015",
+        "language": "fr",
+        "img": "img/9781781101056.jpg",
+        "added": "22/02/2020",
+        "taken": false
+    },
+    "Notes": {"1": 2,"2": 4,"3": 4,"4": 3,"5": 3}
+}
+```
+Les fiches contiennent les informations suivantes :
+
+* Titre du livre
+* Auteur(s)
+* Description (Synopsis)
+* Editeur
+* Année de publication
+* Langage
+* Date d'ajout
+* Chemin d'accès à l'image
+* "taken" :
+    * False : le livre n'a pas été emprunté
+    * True : le livre a été emprunté
+
+Il contient également une liste des notes émises par les utilisateurs.
 
 # Réservation
 >***Remarque :*** *Le nombre maximum de livres pouvant être emprunté par un lecteur peut être modifié ou être désactivé. Par défaut, ce paramètre est défini sur 3.*
-# Ajout de livres
-
-```python
-```
