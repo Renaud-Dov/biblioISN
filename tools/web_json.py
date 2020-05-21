@@ -31,6 +31,10 @@ def get_data(ISBN):
     return book,synopsis,img    #on retourne les informations obtenues
 #######################################
 def search(ISBN):
+    '''
+    Cette méthode va chercher, grâce au moteur de recherche inclus dans ISBNLIB, les informations utiles du livre.
+    Si aucun livre n'a pu être trouvé, il retourne une erreur et des listes vides.
+    '''
     global data,synopsis,img
     ajoute=False
     if path.isfile('data/livres/{}.json'.format(ISBN)):

@@ -45,11 +45,17 @@ def deljson(ISBN):
         messagebox.showerror('Erreur','ISBN non présent')
     else:
         data_del(ISBN) #on supprime l'ISBN des datas title & authors
-        remove('img/{}.jpg'.format(ISBN)) #on supprime l'image
+        try:
+            remove('img/{}.jpg'.format(ISBN)) #on supprime l'image
+        except FileNotFoundError:
+            pass
         remove('data/livres/{}.json'.format(ISBN)) #on supprime le fichier json
         messagebox.showinfo('Terminé','Le livre a été correctement supprimé de la bibliothèque')
 
 
+'''
+La partie ci dessous en commentaire correspond à l'ancien code de ce fichier
+'''
 ################################################################################################################################
 ################################################################################################################################
 ################################################################################################################################

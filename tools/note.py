@@ -8,6 +8,10 @@ def moy_note(liste):
 # print(moy_note({"1": 5,"2": 1,"3": 4,"4": 5,"5": 14}))
 
 def note_img(note):
+    '''
+    Cette méthode permet d'arrondir la note
+    afin de choisir la bonne image dans les fiches
+    '''
     if note-float(floor(note))>0.5:note=float(floor(note))+0.5
     else:note=float(floor(note))
     return note

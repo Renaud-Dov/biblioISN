@@ -9,7 +9,7 @@ from tools.reservation import reservation_read,reservation_add
 root=tk.Tk()
 root.geometry('1400x900')
 root.resizable(False,False)
-root.title('BIBLIO-ISN')
+root.title('BIBLIOISN')
 root.configure(bg='#809c7c')
 
 from tools.font import *
@@ -36,26 +36,23 @@ liste_decoupe=[]
 value_entry = tk.StringVar()
 pages_max=int()
 #########################################################
-def add_button():
-    messagebox.showinfo('Erreur','Lancez le programme isbn_ui.py')
-#########################################################
 def valider():
     global nb_resultats,liste_decoupe,pages_max
     ###########################################
-    data=entry.get()
+    data=entry.get() #on récupère que qu'il y a dans l'espace d'entrée
     if data!='':
-        resultats,liste_decoupe=research.recherche(data,6)
+        resultats,liste_decoupe=research.recherche(data,6) #on lance la recherche, et on veut afficher 6 résultats par page
 
         if resultats!=[]:
             nb_resultats.configure(text='Nombre de résultats: {}'.format(len(resultats)))
             welcome_label.forget()
             right_panel.pack(fill=tk.BOTH,expand=tk.YES) 
             pages_max=len(liste_decoupe) # nombre de pages nécéssaire pour afficher tous les résultats
-            reinitialiser_recherche()
-            affichage_resultats()
-        else:
+            reinitialiser_recherche() #on se remet à la première page
+            affichage_resultats() #on affiche les résultats
+        else: #aucun résultat
             messagebox.showerror('Erreur','Aucun résultat')
-    else:
+    else: #aucun terme entré
         messagebox.showerror('Erreur','Aucun terme rentré')
 #########################################################
 tk.Label(left_panel,text='BIBLIO-ISN',bg='#aec9ab',font=title1_font).pack(pady=25,padx=80)
@@ -109,16 +106,16 @@ def reinitialiser_recherche():
 
 def clic_auteur(authors):
     '''
-    Lance une recherche d'un auteur
+    Si l'on clique sur une mini-fiche sur le(s) nom(s) d'un/des auteur(s)
+    --> rechercher tous les livres de cet/ces auteur(s)
     '''
     value_entry.set(' '.join(authors)) #on écrit dans l'encadré le nom de(s) auteurs
     valider() #on lance la recherche() avec le nom de l'auteur
 ###############################################################
-def frame_valider(ISBN):
+def frame_valider(ISBN): #Si on clique sur une mini-fiche, afficher la fiche détaillée
     affichage_fiche(ISBN)
 ###############################################################
 def afficher(panel,infos,number):
-    # global clock_img
     print(number,infos[0:3])
     # print(infos)
     # ISBN=infos[0]
@@ -128,7 +125,7 @@ def afficher(panel,infos,number):
     # disponible=infos[4]
     images[number] = ImageTk.PhotoImage(Image.open(infos[4]))
     author=str()
-    for o in infos[2]:
+    for o in infos[2]: #on transforme en texte la liste des auteurs
         author+=o+', '  
     author=author[0:-2]
  
@@ -142,6 +139,9 @@ def afficher(panel,infos,number):
             infos[3]=infos[3][0:i]+'...' #si plus de 400 caractères
             break
     ###########################################################
+    '''
+    On insère maintenant le contenu à travers différentes frames et Labels
+    '''
     panel_info=tk.Frame(panel,bg='white',cursor="hand1")
     panel_info.grid(row=0,column=1,sticky='n')
     ###########################################################
@@ -155,7 +155,7 @@ def afficher(panel,infos,number):
     image=tk.Label(panel,image=images[number])
     image.grid(row=0,column=0,sticky='n') #image
 
-    if infos[5]==True:
+    if infos[5]==True: #si le livre est actuellement emprunté, on rajoute une icone horloge
         clock=tk.Label(panel,image=clock_img)
         clock.grid(row=0,column=0,sticky='nw')
         clock.bind('<Button-1>',lambda e:frame_valider(infos[0]))
@@ -163,7 +163,7 @@ def afficher(panel,infos,number):
     desc=tk.Label(panel_info,text=infos[3],font=tt_font1,bg='white',justify='left')
     desc.grid(row=2,column=0,padx=5) #synopsis
     ###########################################################
-    for i in [panel,panel_info,desc,title,image]:
+    for i in [panel,panel_info,desc,title,image]: #pour chaque élément du rectangle, on le rend cliquable
         i.bind('<Button-1>',lambda e:frame_valider(infos[0])) #Clic gauche
 
 photo_fiche=ImageTk.PhotoImage(Image.open('img/{}.jpg'.format('9780525555353')))
@@ -198,16 +198,13 @@ def affichage_fiche(ISBN):
     try:
         photo_fiche=ImageTk.PhotoImage(Image.open('img/{}.jpg'.format(ISBN)))
     except FileNotFoundError:
-        photo_fiche=ImageTk.PhotoImage(Image.open('img/no_img.jpg'))
+        photo_fiche=ImageTk.PhotoImage(Image.open('tools/icons/no_img.jpg'))
     star_fiche=ImageTk.PhotoImage(Image.open('tools/icons/stars/{}.jpg'.format(str(note_img).replace('.',','))))
     ###################################################
     author=str()
     for o in book["Auteur"]:
         author+=o+', '  
     author=author[0:-2]
-    # for i in range(len(book['Synopsis'])):
-    #         if i%100==0 and i!=0: #si multiple de 45 caractères
-    #             book['Synopsis']=book['Synopsis'][0:i]+'\n'+book['Synopsis'][i:len(book['Synopsis'])]
     ###################################################
     tk.Label(info1,text=book['Titre'],font=title2_font,bg='white').grid(row=0,column=0,pady=5)
     tk.Label(info1,text='Par : {}'.format(author),font=tt_font2,bg='white').grid(row=1,column=0)
@@ -230,7 +227,7 @@ def affichage_fiche(ISBN):
     tk.Label(info2,image=star_fiche,bd=0).grid(row=2,column=0,pady=5)
     tk.Button(info2,command=lambda:fiche_panel.destroy(),text='Fermer',font=tt_font,relief='ridge',borderwidth=5,bg='white',width=12).grid(row=3,column=0,pady=15)
     ###################################################
-    if book['taken']==False:
+    if book['taken']==False: #si le livre n'a pas été emprunté, on crée un espace permettant à l'utilisateur d'emprunter le livre
         tk.Label(emprunt_panel,bg='white',font=tt_font3,
                 text='Réservation disponible:\nVous pouvez réserver le livre du {} au {} (2 semaines) ?'.format(date.date_today(),date.date_add(14))).grid(row=0,column=0)
         tk.Label(emprunt_panel,text='Nom & Prénom',bg='white').grid(row=1,column=0)
@@ -238,7 +235,7 @@ def affichage_fiche(ISBN):
         name_entry.grid(row=2,column=0)
         ##################
         tk.Button(emprunt_panel,text='Réserver',command=lambda:emprunt(ISBN,14,name_entry.get(),book['Titre']),font=tt_font,relief='ridge',borderwidth=5,bg='white',width=12).grid(row=3,column=0,pady=10)
-    elif book['taken']==True:
+    elif book['taken']==True: #sinon, on affiche que la réservation est indisponible
         tk.Label(emprunt_panel,bg='white',text='Réservation indisponible:\nLe livre sera disponible le {}'.format(reservation_read(ISBN))).grid(row=0,column=0,pady=5)
     
 #########################################################
@@ -254,20 +251,24 @@ def affichage_resultats():
         o.destroy() #on supprime tous les rectangles
     #####################################################
     list_ISBN=liste_decoupe[page_num-1] #on prend les nb ISBN correspondant au numero de page
-
-    for o in range(len(list_ISBN)):
-        research_panels[o]=tk.Frame(research_frame,bg='white',cursor="hand1",height=200,width=490)
-        if o==0:row=0;column=0
-        elif o==1:row=0;column=1
-        elif o==2:row=1
-        elif o==3:row=1
-        elif o==4:row=2
-        elif o==5:row=2
-        if o%2==0:column=0
-        else:column=1
+    '''
+    Voici à quoi resemble la matrice de rectangles (suivant leur numéro) :
+    |0  1|
+    |2  3|
+    |4  5|
+    '''
+    for o in range(len(list_ISBN)): #pour chaque ISBN
+        research_panels[o]=tk.Frame(research_frame,bg='white',cursor="hand1",height=200,width=490) #on recrée les différents panels
+        '''
+        Suivant le nombre de la matrice, 
+        '''
+        if o==0 or o==1:row=0
+        elif o==2 or o==3:row=1
+        elif o==4 or o==5:row=2
+        column=o%2
         research_panels[o].grid(row=row,column=column,padx=15,pady=15)
-        research_panels[o].grid_propagate(0)
-        afficher(research_panels[o],research.data(list_ISBN[o]),o)
+        research_panels[o].grid_propagate(0) #on bloque l'expansion des Frames
+        afficher(research_panels[o],research.data(list_ISBN[o]),o) #on insere le contenu dans la frame
 
     research_frame.grid(row=0,column=0,sticky='n') #on réaffiche le frame
 #####################################################
@@ -285,7 +286,7 @@ def change_page(num):
         numberpage.configure(text='{}/{}'.format(page_num,pages_max))
         affichage_resultats()
         if page_num==1:
-            previous_page.configure(state='disable')    #Le bouton désactivé
+            previous_page.configure(state='disable')    #Le bouton est désactivé
         if page_num==pages_max:#on est à la dernière page
             next_page.configure(state='disable')        #Le bouton est désactivé
 

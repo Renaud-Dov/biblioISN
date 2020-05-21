@@ -10,6 +10,14 @@ root.geometry('1400x900')
 root.resizable(False,False)
 root.title('Titre')
 root.configure(bg='#8F98E2')
+'''
+INFO IMPORTANTE :
+
+Ce code est un outil test permettant de visualiser des livres directement depuis internet
+Puis de pouvoir les rajouter les rajouter manuellement
+
+
+'''
 #########################################################
 title1_font=font.Font(family='Calibri',size=25)
 research_font=font.Font(family='Calibri',size=18)

@@ -1,6 +1,6 @@
 import json
 from tools.date import date_today,date_add
-from tools.connection import read_emprunt
+# from tools.connection import read_emprunt
 #################################################
 def writefile(variable,name):
     '''
@@ -40,32 +40,35 @@ def reservation_add(ISBN,time,name):
         reserve=True
     return reserve
 
-def reservation_add_user(ISBN,time,username):
-    reserve=False
-    if read_emprunt(username)<=3:
-        data={
-                "from":date_today(),
-                "to":date_add(time),
-                "Name":username
-            }
-        with open('data/reservation.json','r') as outfile:
-            var=json.load(outfile)
-            var[ISBN]=data
-            outfile.close()
-            writefile(var,'reservation')
-        with open('data/user.json','r') as outfile:
-            var=json.load(outfile)
-            var[username]['emprunts_actuels']+=1
-            writefile(var,'user')
-        with open('data/livres/{}.json'.format(ISBN),'r') as outfile:
-            var2=json.load(outfile)
-            var2['Book']['taken']=True
-            outfile.close()
-            writefile(var2,'livres/{}'.format(ISBN))
-            reserve=True
-    return reserve
+# def reservation_add_user(ISBN,time,username):
+#     reserve=False
+#     if read_emprunt(username)<=3:
+#         data={
+#                 "from":date_today(),
+#                 "to":date_add(time),
+#                 "Name":username
+#             }
+#         with open('data/reservation.json','r') as outfile:
+#             var=json.load(outfile)
+#             var[ISBN]=data
+#             outfile.close()
+#             writefile(var,'reservation')
+#         with open('data/user.json','r') as outfile:
+#             var=json.load(outfile)
+#             var[username]['emprunts_actuels']+=1
+#             writefile(var,'user')
+#         with open('data/livres/{}.json'.format(ISBN),'r') as outfile:
+#             var2=json.load(outfile)
+#             var2['Book']['taken']=True
+#             outfile.close()
+#             writefile(var2,'livres/{}'.format(ISBN))
+#             reserve=True
+#     return reserve
 #################################################
 def reservation_del(ISBN):
+    '''
+    Retire le livre. Retourne True si le livre a été retiré
+    '''
     with open('data/reservation.json','r') as outfile:
         var=json.load(outfile)
     if ISBN in var:
@@ -82,13 +85,16 @@ def reservation_del(ISBN):
         return False #le livre n'a pas été retiré
 
 def reservation_data(ISBN):
+    '''
+    Retourne toutes les réservations (Dictionnaire)
+    '''
     with open('data/reservation.json','r') as outfile:
         var=json.load(outfile)
     return var[ISBN]
 def reservation_state(ISBN):
+    '''
+    Cette méthode checke si le livre est emprunté
+    '''
     with open('data/reservation.json','r') as outfile:
         var=json.load(outfile)
-    if ISBN in var:
-        return True
-    else:
-        return False
+    return ISBN in var

@@ -1,5 +1,7 @@
 from tkinter import font
-
+'''
+Font préconçus
+'''
 title_font=font.Font(family='Calibri',size=50)
 title1_font=font.Font(family='Calibri',size=25)
 title2_font=font.Font(family='Calibri',size=25,weight='bold',underline=1)
