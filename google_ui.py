@@ -119,7 +119,7 @@ Interface de recherche
 ##################################################################################################################
 ##################################################################################################################
 research_frame=tk.Frame(right_panel,bg='#8F98E2') #5f8ade
-images=[ImageTk.PhotoImage(Image.open("img/no_img.jpg"))]*4
+images=[ImageTk.PhotoImage(Image.open("tools/icons/no_img.jpg"))]*4
 ###############################################################
 panel1=tk.Frame(research_frame,bg='white')
 panel2=tk.Frame(research_frame,bg='white')
@@ -242,7 +242,7 @@ def change_page(num):
     
     if page_num==1 and num==-1:
         page_num=1
-        previous_page.configure(state='disable')
+        previous_page.configure(state='disable')pesne
         next_page.configure(state='disable')
         
     elif page_num+num<=pages_max:
