@@ -49,7 +49,7 @@ L'administrateur a juste besoin de l'ISBN. Il peut ensuite effectuer différente
 
 #### Ajouter un livre
 * Mode automatique (Via ISBNLIB)
-<img src="screenshot/screenshot10.jpg" alt="Ajout livre">
+<img src="screenshot/screenshot7.jpg" alt="Ajout livre">
 Le module ISBNLIB va trouver les informations exisantes disponible sur
 
 >Étant donné que le logiciel va télécharger les métadonnées en ligne, **une connexion internet est obligatoire pour pouvoir rajouter un livre en local**

@@ -217,14 +217,14 @@ def change_page(num):
 
     print(num,pages_max)
     if page_num+num<=pages_max:
-        previous_page.configure(state='normal') #Le bouton refonctionne
-        next_page.configure(state='normal')     #Le bouton refonctionne
+        previous_page.configure(state='normal')         #Le bouton refonctionne
+        next_page.configure(state='normal')             #Le bouton refonctionne
         page_num+=num
         numberpage.configure(text='{}/{}'.format(page_num,pages_max))
         affichage_resultats()
         if page_num==1:
             previous_page.configure(state='disable')    #Le bouton est désactivé
-        if page_num==pages_max:#on est à la dernière page
+        if page_num==pages_max:                         #on est à la dernière page
             next_page.configure(state='disable')        #Le bouton est désactivé
 
 #########################################################
