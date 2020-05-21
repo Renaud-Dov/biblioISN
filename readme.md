@@ -3,7 +3,7 @@
 ***Version 1.00***
 
 BiblioISN est un logiciel Python 3 de gestion de livres pour les établissements scolaires, écrit par [Renaud-Dov DEVERS](https://github.com/Renaud-Dov) et [Ysilde Capet-Virbel](https://github.com/Newody)
-
+*Il s'agit d'un projet scolaire en vue d'une épreuve du baccalauréat.*
 ## Installation
 
 Utilisez le gestionnaire de paquets [pip](https://pip.pypa.io/en/stable/) pour installer les modules nécéssaires au bon fonctionnement du logiciel :
@@ -20,7 +20,7 @@ Pour la première utilisation, l'administrateur doit exécuter le <abbr title="i
 # Utilisation
 
 ### **Étudiants**
-Pour démarrer le logiciel, il faut exécuter le programme "eleve_app.py"
+Pour démarrer le logiciel, il faut exécuter le programme ```"eleve_app.py"```
 
 <img src="screenshot/screenshot1.jpg" alt="Capture d'écran d'une recherche">
 
@@ -41,13 +41,15 @@ Sur la page de recherche, une icône indique si le livre est actuellement emprun
 
 ---
 ### **Documentalistes**
-Pour s'occuper de la gestion des livres, des emprunts, il faut exécuter ***Remarque :*** _Il n'est pas possible actuellement d'avoir deux fois le même ISBN. Chaque livre ne peut être compatabilisé qu'une seule fois_le programme "gestion_app.py"
+Pour s'occuper de la gestion des livres, des emprunts, il faut exécuter ***Remarque :*** *Il n'est pas possible actuellement d'avoir deux fois le même ISBN. Chaque livre ne peut être compatabilisé qu'une seule fois le programme* ```"gestion_app.py"```
 <img src="screenshot/screenshot5.jpg" alt="Gestion ISBN">
 L'administrateur a juste besoin de l'ISBN. Il peut ensuite effectuer différentes actions :
 
+<img src="screenshot/screenshot9.jpg" alt="Gestion ISBN">
+
 #### Ajouter un livre
 * Mode automatique (Via ISBNLIB)
-<img src="screenshot/screenshot7.jpg" alt="Ajout livre">
+<img src="screenshot/screenshot10.jpg" alt="Ajout livre">
 Le module ISBNLIB va trouver les informations exisantes disponible sur
 
 >Étant donné que le logiciel va télécharger les métadonnées en ligne, **une connexion internet est obligatoire pour pouvoir rajouter un livre en local**
@@ -72,7 +74,13 @@ L'administrateur peut retirer le livre de la base de donnée. Une telle action
 #### Modifier un livre
 Fonction non implémentée
 
-# Base de donnée
+#### Marquer un livre comme rendu
+
+<img src="screenshot/screenshot8.jpg" alt="Gestion ISBN">
+
+Il suffit de cliquer sur l'icône livre emprunté
+
+# Bases de données
 Les bases de données sont crées en ***Json***. Se trouvant dans le répertoire "/data", on y trouve de multiples bases de données listées ci dessous.
 
 #### <abbr title="data/title.json">Titres</abbr>
