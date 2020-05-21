@@ -2,7 +2,7 @@
 =====
 ***Version 1.00***
 
-BiblioISN est un logiciel Python 3 de gestion de livres pour les établissements scolaires.
+BiblioISN est un logiciel Python 3 de gestion de livres pour les établissements scolaires, écrit par [Renaud-Dov DEVERS](https://github.com/Renaud-Dov) et [Ysilde Capet-Virbel](https://github.com/Newody)
 
 ## Installation
 
