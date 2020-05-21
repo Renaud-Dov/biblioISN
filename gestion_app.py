@@ -45,7 +45,6 @@ information_frame=None
 #########################################################
 liste_decoupe=[]
 liste_emprunts=[]
-value_entry=tk.StringVar()
 pages_max=int()
 #########################################################
 def valider(types):
@@ -59,22 +58,23 @@ def valider(types):
         elif types=='del':
             deljson(ISBN)
         elif types=='edit':
-            pass           
+            messagebox.showinfo('Erreur','Fonctionnalité non implémentée')         
 
 #########################################################
 # tk.Label(left_panel,text='Rechercher un livre',bg='#aec9ab',font=research_font).pack(padx=80)
-tk.Label(left_panel,text='BIBLIO-ISN',bg='#aec9ab',font=title1_font).pack(pady=25,padx=80)
+tk.Label(left_panel,text='Gestionnaire\nBIBLIO-ISN',bg='#aec9ab',font=title1_font).pack(pady=25,padx=80)
 ISBN_frame=tk.Frame(left_panel,bg='#a1ba9e',relief='raised',bd=5)
 tk.Label(ISBN_frame,text="Gestion ISBN",font=tt_font2,bg='#a1ba9e').pack(pady=5)
-entry=tk.Entry(ISBN_frame,bg='white',relief='raised',width=30,exportselection=0,justify='center',textvariable=value_entry)
-entry.pack(padx=5)
+entry=tk.Entry(ISBN_frame,bg='white',relief='raised',width=15,exportselection=0,justify='center',font=tt_font2)
+entry.pack(padx=25)
 nb_resultats=tk.Label(left_panel,bg='#aec9ab',font=research_font)
 #########################################################
-tk.Button(left_panel,text="Rafraichir",command=lambda:valider('show'),font=tt_font2,relief='ridge',borderwidth=5,bg='white',width=8,cursor="hand1").pack(pady=10)
+tk.Button(left_panel,text="Rafraîchir",command=lambda:valider('show'),font=tt_font2,relief='ridge',borderwidth=5,bg='white',width=8,cursor="hand1").pack(pady=15)
 tk.Button(ISBN_frame,text="Ajouter",command=lambda:valider('add'),font=tt_font2,relief='ridge',borderwidth=5,bg='white',width=6,cursor="hand1").pack(pady=10)
 tk.Button(ISBN_frame,text="Retirer",command=lambda:valider('del'),font=tt_font2,relief='ridge',borderwidth=5,bg='white',width=6,cursor="hand1").pack(pady=10)
 tk.Button(ISBN_frame,text="Modifier",command=lambda:valider('edit'),font=tt_font2,relief='ridge',borderwidth=5,bg='white',width=6,cursor="hand1").pack(pady=10)
 ISBN_frame.pack()
+tk.Button(left_panel, text="Quitter",command=root.quit,font=tt_font2,relief='ridge',borderwidth=5,bg='white',width=6,cursor="hand1").pack(pady=15,side=tk.BOTTOM)
 
 nb_resultats.pack()
 
@@ -95,10 +95,10 @@ def affichage_resultats_add(ISBN,data,img,sypnosis):
     On modifie l'affichage pour montrer les données importées
     '''
     global image_add,affichage_frame,information_frame
-    color='red'
-    affichage_frame=tk.Frame(right_panel)
+    color='#aec9ab'
+    affichage_frame=tk.Frame(right_panel,bg='#aec9ab',relief='raised',bd=5)
     affichage_frame.grid(row=0,column=0)
-    information_frame=tk.Frame(affichage_frame)
+    information_frame=tk.Frame(affichage_frame,bg='#aec9ab')
     information_frame.grid(row=0,column=0)
     ##################################
     if len(data['Title'])>=50: #on raccourci le titre si nombre caractères supérieur à 50
@@ -117,24 +117,27 @@ def affichage_resultats_add(ISBN,data,img,sypnosis):
         sypnosis=sypnosis[0:400]+'...'
 
     tk.Label(information_frame,text=sypnosis,font=tt_font3,fg ='black',bg=color).grid(row=5,column=0)
-    tk.Button(affichage_frame, text="Fermer",command=close_affichage_resultats,font=title1_font,relief='ridge',borderwidth=5,bg='white').grid(row=2,column=0)
+    tk.Button(affichage_frame, text="Fermer",command=close_affichage_resultats,font=title1_font,relief='ridge',borderwidth=5,bg='white').grid(row=2,column=0,pady=5)
 
-#9782746041226
 
 def add(ISBN):
-    ajoute,data,img,sypnosis=web_json.search(ISBN) #on lance la recherche 
-    if ajoute==True: #le livre a été rajouté
-        print(data,img,sypnosis[0:30],ajoute)
-        affichage_resultats_add(ISBN,data,img,sypnosis)
+    if ISBN!='':
+        ajoute,data,img,sypnosis=web_json.search(ISBN) #on lance la recherche 
+        if ajoute==True: #le livre a été rajouté
+            print(data,img,sypnosis[0:30],ajoute)
+            affichage_resultats_add(ISBN,data,img,sypnosis)
 
-    elif ajoute=='existe': #le livre existe déja
-        messagebox.showerror('Erreur','ISBN déja présent')
+        elif ajoute=='existe': #le livre existe déja
+            messagebox.showerror('Erreur','ISBN déja présent')
 
-    elif ajoute==False: #le livre n'a pas été rajouté
-        if messagebox.askokcancel('Erreur',
-            'Erreur avec {}:\nVoulez vous inscrire les données manuellement ou annuler ?'.format(ISBN)):
-            # modif_manuelle(ISBN,data,img,sypnosis)
-            pass
+        elif ajoute==False: #le livre n'a pas été rajouté
+            if messagebox.askokcancel('Erreur',
+                'Erreur avec {}:\nVoulez vous inscrire les données manuellement ou annuler ?'.format(ISBN)):
+                # modif_manuelle(ISBN,data,img,sypnosis)
+                pass
+    else:
+        messagebox.showwarning('Erreur',"Vous n'avez pas rentré d'ISBN")
+        
 
 
 def show_reservations():
@@ -147,7 +150,16 @@ def show_reservations():
     for i in range(0,len(liste_ISBN),6):
         liste_decoupe.append(liste_ISBN[i:i+6])
     print(liste_decoupe)
+
     pages_max=len(liste_decoupe)
+
+    numberpage.configure(text='{}/{}'.format(page_num,pages_max))
+    previous_page.configure(state='disable')
+
+    if pages_max==1:
+        next_page.configure(state='disable')
+    else:
+        next_page.configure(state='normal')
     affichage_resultats()
 
 

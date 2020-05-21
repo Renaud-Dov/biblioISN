@@ -42,7 +42,7 @@ def deljson(ISBN):
     On vient supprimer le livre à l'ISBN correspondant
     '''
     if not path.isfile('data/livres/{}.json'.format(ISBN)):
-        messagebox.showerror('Erreur','ISBN non présent')
+        messagebox.showerror('Erreur',"Vous n'avez pas rentré d'ISBN")
     else:
         data_del(ISBN) #on supprime l'ISBN des datas title & authors
         try:
