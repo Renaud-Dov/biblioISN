@@ -69,6 +69,7 @@ def reservation_del(ISBN):
     '''
     Retire le livre. Retourne True si le livre a été retiré
     '''
+    print(ISBN)
     with open('data/reservation.json','r') as outfile:
         var=json.load(outfile)
     if ISBN in var:
