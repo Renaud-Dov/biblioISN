@@ -34,7 +34,7 @@ L'utilisateur peut voir la description du livre, plus d'autres informations.
 
 * Si le livre n'a pas encore été réservé, l'élève peut le prendre pour une durée (paramétrée par la documentaliste).
 Pour réserver le livre, il suffit de rentrer son nom et prénom.
-* Dans le cas contraire, la fiche ne proposera pas à l'élève de réserver le livre. 
+* Dans le cas contraire, le logiciel indiquera à quelle date le livre devrait être de nouveau disponible. 
 <img src="screenshot/screenshot4.jpg" alt="Fiche d'un livre réservé">
 Sur la page de recherche, une icône indique si le livre est actuellement emprunté.
 <img src="screenshot/screenshot3.jpg" alt="Livre réservé">
@@ -74,6 +74,8 @@ L'administrateur peut retirer le livre de la base de donnée.
 #### Modifier un livre
 L'administrateur peut modifier un livre de la base de donnée.
 
+Interface non finalisée :
+
 <img src="screenshot/screenshot10.jpg" alt="Gestion ISBN">
 
 > Il est possible de modifier l'image de courverture. Les extensions compatibles sont le jpg et le png. Les images sont automatiquement redimensionnées et copiées dans le dossier ```image``` après confirmation.
@@ -82,7 +84,7 @@ L'administrateur peut modifier un livre de la base de donnée.
 
 <img src="screenshot/screenshot8.jpg" alt="Gestion ISBN">
 
-Il suffit de cliquer sur l'icône livre emprunté
+Il suffit de cliquer sur de marquer le livre comme non rendu.
 
 # Bases de données
 Les bases de données sont crées en ***Json***. Se trouvant dans le répertoire "/data", on y trouve de multiples bases de données listées ci dessous.
@@ -130,7 +132,8 @@ Ce fichier json permet de lister en une seule base de donnée tous les emprunts 
     }
 }
 ```
->Le fonctionnement des réservations est vu dans la partie "réservation"
+>***Remarque :*** *Le nombre maximum de livres pouvant être emprunté par un lecteur peut être modifié ou être désactivé. Par défaut, ce paramètre est défini sur 3.*
+
 #### <abbr title="data/livres/{ISBN}.json">Fiche livre</abbr>
 >Chaque livre possède sa propre fiche détaillée situé dans ```"data/livres/{ISBN}.json"```.
 
@@ -167,6 +170,3 @@ Les fiches contiennent les informations suivantes :
     * True : le livre a été emprunté
 
 Il contient également une liste des notes émises par les utilisateurs.
-
-# Réservation
->***Remarque :*** *Le nombre maximum de livres pouvant être emprunté par un lecteur peut être modifié ou être désactivé. Par défaut, ce paramètre est défini sur 3.*
