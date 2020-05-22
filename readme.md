@@ -50,7 +50,7 @@ L'administrateur a juste besoin de l'ISBN. Il peut ensuite effectuer différente
 #### Ajouter un livre
 * Mode automatique (Via ISBNLIB)
 <img src="screenshot/screenshot7.jpg" alt="Ajout livre">
-Le module ISBNLIB va trouver les informations exisantes disponible sur
+Le module ISBNLIB va trouver les informations exisantes disponible sur Google Books.
 
 >Étant donné que le logiciel va télécharger les métadonnées en ligne, **une connexion internet est obligatoire pour pouvoir rajouter un livre en local**
 
@@ -68,11 +68,15 @@ Le mode manuel permet de rentrer manuelement les données d'un livre.
 
 
 #### Supprimer un livre
-L'administrateur peut retirer le livre de la base de donnée. Une telle action 
+L'administrateur peut retirer le livre de la base de donnée. 
 >Retourne une erreur si le livre n'est pas dans la base de données
 
 #### Modifier un livre
-Fonction non implémentée
+L'administrateur peut modifier un livre de la base de donnée.
+
+<img src="screenshot/screenshot10.jpg" alt="Gestion ISBN">
+
+> Il est possible de modifier l'image de courverture. Les extensions compatibles sont le jpg et le png. Les images sont automatiquement redimensionnées et copiées dans le dossier ```image``` après confirmation.
 
 #### Marquer un livre comme rendu
 

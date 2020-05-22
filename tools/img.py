@@ -1,6 +1,6 @@
 from PIL import Image
 
-def rezise(img,title,ISBN):
+def rezise(img,ISBN):
     '''
     Cette méthode a pour but de recadrer une image,
     importée par l'utilisateur qui souhaite rajouter un livre manuellement.
@@ -16,4 +16,3 @@ def rezise(img,title,ISBN):
 #     new=img.resize((480,800))
 #     img.show()
 # open_img('img/no_img.jpg')
-# rezise('img/no_img.jpg','Titre','251662489523')

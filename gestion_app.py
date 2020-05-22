@@ -6,13 +6,12 @@ from PIL import Image, ImageTk #module gestion d'image
 from tools.reservation import reservation_del,reservation_data,reservation_state
 import tools.book as book
 import json
-
 import tools.research as research
 from tools.book import readinfo
 from tools.note import moy_note
 import tools.date as date
-from tools.reservation import reservation_read,reservation_add
-
+import tools.img
+from tools.reservation import reservation_read,reservation_del
 root=tk.Tk()
 root.geometry('1400x900')
 root.resizable(False,False)
@@ -40,11 +39,13 @@ right_panel=tk.Frame(root,relief='raised',bg='#809c7c')
 image_add=ImageTk.PhotoImage(Image.open('tools/icons/no_img.jpg'))
 right_panel.pack(side=tk.RIGHT,fill=tk.Y,expand=1)
 emprunt_isbnframe=None
-affichage_frame=None
+affichage_frame=edit_panel=None
 information_frame=None
+import_img=None
 #########################################################
 liste_decoupe=[]
 liste_emprunts=[]
+entrys=[]
 pages_max=int()
 #########################################################
 def valider(types):
@@ -58,7 +59,8 @@ def valider(types):
         elif types=='del':
             deljson(ISBN)
         elif types=='edit':
-            messagebox.showinfo('Erreur','Fonctionnalité non implémentée')         
+            # messagebox.showinfo('Erreur','Fonctionnalité non implémentée')         
+            edit(ISBN)
 
 #########################################################
 # tk.Label(left_panel,text='Rechercher un livre',bg='#aec9ab',font=research_font).pack(padx=80)
@@ -186,6 +188,44 @@ def voir_reservation(panel,ISBN,num):
     tk.Label(info_frame,text='Emprunté par {},\ndu {} au {}'.format(data['Name'],data['from'],data['to']),font=tt_font,bg='white').grid(row=2,column=0,pady=5)
     tk.Button(info_frame,text='Marquer le livre\ncomme non-emprunté',command=lambda:retirer(ISBN)).grid(row=3,column=0,pady=15)
 
+def valider_edit(ISBN):
+    global entrys,import_img
+    l=[]
+    for o in range(6):
+        l.append(entrys[o][1].get())
+
+    book.edit_files(ISBN,l)
+    if type(import_img)==type(str()):
+        tools.img.rezise(import_img,ISBN)
+    edit_panel.destroy()
+    messagebox.showinfo('Gestionnaire Biblio-ISN','Le livre a bien été modifié')
+
+def edit(ISBN):
+    global entrys,import_img,edit_panel
+    if ISBN!='':
+        edit_panel=tk.Frame(right_panel)
+        edit_panel.grid(row=0,column=0,sticky='n')
+        data=book.readinfo(ISBN)[0]
+        values=list(data.values())[0:6]
+        entrys=[]
+        import_img=tuple()
+
+        for i in range(6):
+            s=tk.StringVar()
+            entrys.append([tk.Entry(edit_panel,textvariable=s,width=60),s])
+            entrys[i][1].set(values[i])
+            entrys[i][0].pack(pady=5)
+
+        tk.Button(edit_panel,text='Importer image',command=filepath).pack(pady=5)
+        tk.Button(edit_panel,text='Annuler',command=edit_panel.destroy).pack(pady=5)
+        tk.Button(edit_panel,text='Confirmer',command=lambda:valider_edit(ISBN)).pack(pady=5)
+
+def filepath(): #ouvre une boîte de dialogue invitant l'utilisateur à donner le chemin du fichier
+    global import_img
+    a=filedialog.askopenfilename(title="Importer une image",filetypes=[('jpg files','.jpg'),('png files','.png')])
+    if type(a)==type(tuple()):
+        messagebox.showerror('Erreur',"Vous n'avez pas choisi d'image")
+    else:import_img=a
 
 def affichage_resultats():
     '''
@@ -215,7 +255,6 @@ def affichage_resultats():
 def change_page(num):
     global page_num,pages_max
 
-    print(num,pages_max)
     if page_num+num<=pages_max:
         previous_page.configure(state='normal')         #Le bouton refonctionne
         next_page.configure(state='normal')             #Le bouton refonctionne
