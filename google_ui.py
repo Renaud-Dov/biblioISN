@@ -242,7 +242,7 @@ def change_page(num):
     
     if page_num==1 and num==-1:
         page_num=1
-        previous_page.configure(state='disable')pesne
+        previous_page.configure(state='disable')
         next_page.configure(state='disable')
         
     elif page_num+num<=pages_max:

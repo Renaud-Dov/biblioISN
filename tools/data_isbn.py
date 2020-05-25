@@ -28,10 +28,9 @@ def newjson(ISBN,title,authors,sypnosis,img,publisher,year,language):
             "added":date_today(),
             "taken":False
             },
-        "Notes":{
-            "Notes": {"1": 0,"2": 0,"3": 0,"4": 0,"5": 0},
-            "Avis": {}
-        }} 
+        "Notes":{"1": 0,"2": 0,"3": 0,"4": 0,"5": 0},
+            
+        }
     writefile(data,ISBN)
     title_data(ISBN,title)
     author_data(ISBN,authors)
