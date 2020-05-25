@@ -49,7 +49,6 @@ entrys=[]
 pages_max=int()
 #########################################################
 def valider(types):
-    print(types)
     if types=='show':
         show_reservations()
     else:
@@ -71,6 +70,9 @@ entry=tk.Entry(ISBN_frame,bg='white',relief='raised',width=15,exportselection=0,
 entry.pack(padx=25)
 nb_resultats=tk.Label(left_panel,bg='#aec9ab',font=research_font)
 #########################################################
+'''
+
+'''
 tk.Button(left_panel,text="Rafraîchir",command=lambda:valider('show'),font=tt_font2,relief='ridge',borderwidth=5,bg='white',width=8,cursor="hand1").pack(pady=15)
 tk.Button(ISBN_frame,text="Ajouter",command=lambda:valider('add'),font=tt_font2,relief='ridge',borderwidth=5,bg='white',width=6,cursor="hand1").pack(pady=10)
 tk.Button(ISBN_frame,text="Retirer",command=lambda:valider('del'),font=tt_font2,relief='ridge',borderwidth=5,bg='white',width=6,cursor="hand1").pack(pady=10)
@@ -81,7 +83,7 @@ tk.Button(left_panel, text="Quitter",command=root.quit,font=tt_font2,relief='rid
 nb_resultats.pack()
 
 images=[0]*6
-page_num=1
+page_num=1 
 research_frame=tk.Frame(right_panel,bg='#809c7c') #5f8ade
 research_frame.grid(row=1,column=0,sticky='n')
 research_panels=[tk.Frame(research_frame,bg='white')]*6
@@ -97,7 +99,6 @@ def affichage_resultats_add(ISBN,data,img,sypnosis):
     On modifie l'affichage pour montrer les données importées
     '''
     global image_add,affichage_frame,information_frame
-    color='#aec9ab'
     affichage_frame=tk.Frame(right_panel,bg='#aec9ab',relief='raised',bd=5)
     affichage_frame.grid(row=0,column=0)
     information_frame=tk.Frame(affichage_frame,bg='#aec9ab')
@@ -107,10 +108,10 @@ def affichage_resultats_add(ISBN,data,img,sypnosis):
         data['Title']=data['Title'][0:50]+'...'
     text='{}\n Par {}'.format(data['Title'],str(data['Authors']).lstrip('[').rstrip(']'))
     ##################################
-    tk.Label(information_frame,text=text,font=tt_font3,fg ='black',bg=color).grid(row=0,column=0) #titre & auteurs
-    tk.Label(information_frame,text='ISBN: '+ISBN,font=tt_font3,fg ='black',bg=color).grid(row=2,column=0) #ISBN
+    tk.Label(information_frame,text=text,font=tt_font3,fg ='black',bg='#aec9ab').grid(row=0,column=0) #titre & auteurs
+    tk.Label(information_frame,text='ISBN: '+ISBN,font=tt_font3,fg ='black',bg='#aec9ab').grid(row=2,column=0) #ISBN
     tk.Label(information_frame,text='{}, publié en {}, langue : {}'.format(data['Publisher'],data['Year'],data['Language']),
-                    font=tt_font3,fg ='black',bg=color).grid(row=3,column=0)#editeur & année
+                    font=tt_font3,fg ='black',bg='#aec9ab').grid(row=3,column=0)#editeur & année
     ##################################
     image_add = ImageTk.PhotoImage(Image.open(img))
     tk.Label(affichage_frame,image=image_add).grid(row=1,column=0)
@@ -118,19 +119,22 @@ def affichage_resultats_add(ISBN,data,img,sypnosis):
     if len(sypnosis)>=400:  #Si il y a plus de 400 caractères, on s'arrête à 400 caractères et on affiche des points de suspensions
         sypnosis=sypnosis[0:400]+'...'
 
-    tk.Label(information_frame,text=sypnosis,font=tt_font3,fg ='black',bg=color).grid(row=5,column=0)
+    tk.Label(information_frame,text=sypnosis,font=tt_font3,fg ='black',bg='#aec9ab').grid(row=5,column=0)
     tk.Button(affichage_frame, text="Fermer",command=close_affichage_resultats,font=title1_font,relief='ridge',borderwidth=5,bg='white').grid(row=2,column=0,pady=5)
 
 
 def add(ISBN):
+    '''
+    Méthode pour rajouter un livre via son ISBN
+    '''
     if ISBN!='':
         ajoute,data,img,sypnosis=web_json.search(ISBN) #on lance la recherche 
         if ajoute==True: #le livre a été rajouté
             print(data,img,sypnosis[0:30],ajoute)
-            affichage_resultats_add(ISBN,data,img,sypnosis)
+            affichage_resultats_add(ISBN,data,img,sypnosis) #affiche la fiche ajout
 
         elif ajoute=='existe': #le livre existe déja
-            messagebox.showerror('Erreur','ISBN déja présent')
+            messagebox.showerror('Erreur','ISBN déjà présent')
 
         elif ajoute==False: #le livre n'a pas été rajouté
             if messagebox.askokcancel('Erreur',
@@ -143,13 +147,16 @@ def add(ISBN):
 
 
 def show_reservations():
+    '''
+    Méthode pour afficher les réservations
+    '''
     global liste_emprunts,liste_decoupe,pages_max,page_num
-    with open('data/reservation.json','r') as outfile:
+    with open('data/reservation.json','r') as outfile: #on désiérialise reservation.json
         liste_emprunts=json.load(outfile)
-    liste_ISBN=list(liste_emprunts.keys())
+    liste_ISBN=list(liste_emprunts.keys()) #on garde que les clés du dictionnaire, et on transforme le tuple en dictionnaire
     liste_decoupe=[]
     page_num=1
-    for i in range(0,len(liste_ISBN),6):
+    for i in range(0,len(liste_ISBN),6): #découpe la liste en 6 éléments par page
         liste_decoupe.append(liste_ISBN[i:i+6])
     print(liste_decoupe)
 
@@ -158,7 +165,7 @@ def show_reservations():
     numberpage.configure(text='{}/{}'.format(page_num,pages_max))
     previous_page.configure(state='disable')
 
-    if pages_max==1:
+    if pages_max==1: #si il n'y a qu'une seule page, le bouton page suivante est bloqué
         next_page.configure(state='disable')
     else:
         next_page.configure(state='normal')
@@ -166,6 +173,9 @@ def show_reservations():
 
 
 def retirer(ISBN):
+    '''
+    Retire un livre via son ISBN
+    '''
     if reservation_del(ISBN)==True:
         messagebox.showinfo('ISBN','Le livre a bien été retiré des emprunts')
         show_reservations()
@@ -223,7 +233,7 @@ def edit(ISBN):
 def filepath(): #ouvre une boîte de dialogue invitant l'utilisateur à donner le chemin du fichier
     global import_img
     a=filedialog.askopenfilename(title="Importer une image",filetypes=[('jpg files','.jpg'),('png files','.png')])
-    if type(a)==type(tuple()):
+    if type(a)==type(tuple()): #si on n'a pas sélectionné d'image, a sera un tuple
         messagebox.showerror('Erreur',"Vous n'avez pas choisi d'image")
     else:import_img=a
 
