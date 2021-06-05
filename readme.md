@@ -1,6 +1,6 @@
 **BiblioISN**
 =====
-***Version 1.00***
+## Projet archivé en accès libre
 
 BiblioISN est un logiciel Python 3 de gestion de livres pour les établissements scolaires, écrit par [Renaud-Dov DEVERS](https://github.com/Renaud-Dov) et [Ysilde Capet-Virbel](https://github.com/Newody)
 *Il s'agit d'un projet scolaire en vue d'une épreuve du baccalauréat.*
